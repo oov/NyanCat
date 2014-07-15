@@ -61,11 +61,22 @@ var HelloWorldLayer = cc.Layer.extend({
     }
 });
 
+var MyShipLayer = cc.Layer.extend({
+    sprite:null,
+    ctor:function () {
+        this._super();
+        this.sprite = cc.Sprite.create(res.nc_png);
+        this.addChild(this.sprite, 0);
+        return true;
+    }
+});
+
 var HelloWorldScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
         var layer = new HelloWorldLayer();
         this.addChild(layer);
+        var myShip = new MyShipLayer();
+        this.addChild(myShip);
     }
 });
-
