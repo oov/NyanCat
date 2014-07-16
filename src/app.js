@@ -110,13 +110,14 @@ var HelloWorldScene = cc.Scene.extend({
     blocks:[],
     onEnter:function () {
         this._super();
+        var size = cc.director.getWinSize();
         var layer = new HelloWorldLayer();
         this.addChild(layer);
         this.myShip = new MyShipLayer();
         this.addChild(this.myShip);
         this.myShip.attr({
           x: 40,
-          y: cc.director.getWinSize().height / 2
+          y: size.height / 2
         });
 
         for (var i = 0, bl; i < 100; ++i) {
@@ -130,6 +131,12 @@ var HelloWorldScene = cc.Scene.extend({
               255
             )
           );
+          bl.attr({
+            x: size.width+Math.random()*size.width,
+            y: -bl.height+Math.random()*(size.height+bl.height),
+            vx: -1-Math.random()*3,
+            vy: -0.5+Math.random()
+          });
           this.addChild(bl);
           this.blocks.push(bl);
         }
