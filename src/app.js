@@ -83,5 +83,15 @@ var HelloWorldScene = cc.Scene.extend({
         this.addChild(layer);
         var myShip = new MyShipLayer();
         this.addChild(myShip);
-    }
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
+            onTouchBegan: this.onTap,
+        }, this)
+    },
+    onTap:function(touch, event) {
+        var pos = touch.getLocation();
+        cc.log(pos);
+        return true;
+    },
 });
