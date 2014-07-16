@@ -76,7 +76,7 @@ var MyShipLayer = cc.Layer.extend({
     },
     update:function(dt) {
         this.y += this.vy;
-        this.vy -= 0.09;
+        this.vy -= 0.1;
     },
     jump:function() {
       this.vy = 3;
@@ -120,9 +120,9 @@ var HelloWorldScene = cc.Scene.extend({
           y: size.height / 2
         });
 
-        for (var i = 0, bl; i < 100; ++i) {
+        for (var i = 0, bl; i < 16; ++i) {
           bl = new BlockLayer(
-            40+Math.random()*60,
+            30+Math.random()*60,
             40+Math.random()*60,
             cc.color(
               128+Math.random()*64,
@@ -134,8 +134,8 @@ var HelloWorldScene = cc.Scene.extend({
           bl.attr({
             x: size.width+Math.random()*size.width,
             y: -bl.height+Math.random()*(size.height+bl.height),
-            vx: -1-Math.random()*3,
-            vy: -0.5+Math.random()
+            vx: -0.5-Math.random()*3,
+            vy: -0.25+Math.random()*0.5
           });
           this.addChild(bl);
           this.blocks.push(bl);
