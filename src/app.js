@@ -159,7 +159,10 @@ var HelloWorldScene = cc.Scene.extend({
       for(var i = this.blocks.length - 1, bl; i >= 0; --i) {
         bl = this.blocks[i];
         if (cc.rectIntersectsRect(myShipBB, bl.getBoundingBox())) {
-          cc.log('hit');
+          this.unscheduleUpdate();
+          cc.eventManager.removeListener(this);
+          cc.director.runScene(cc.TransitionFade.create(0.5, new HelloWorldScene()));
+          return;
         }
         if (bl.x+bl.width < 0) {
           bl.attr({
