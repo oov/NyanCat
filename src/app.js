@@ -80,6 +80,16 @@ var MyShipLayer = cc.Layer.extend({
     }
 });
 
+var BlockLayer = cc.Layer.extend({
+    d:null,
+    ctor:function () {
+        this._super();
+        this.d = cc.DrawNode.create();
+        this.addChild(this.d, 0);
+        return true;
+    }
+});
+
 var HelloWorldScene = cc.Scene.extend({
     myShip:null,
     onEnter:function () {
@@ -92,6 +102,8 @@ var HelloWorldScene = cc.Scene.extend({
           x: 40,
           y: cc.director.getWinSize().height / 2
         });
+        var block = new BlockLayer();
+        this.addChild(block);
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
