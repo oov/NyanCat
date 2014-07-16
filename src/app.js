@@ -111,9 +111,12 @@ var HelloWorldScene = cc.Scene.extend({
             swallowTouches: true,
             onTouchBegan: this.onTap,
         }, this)
+        this.scheduleUpdateWithPriority(10);
     },
     onTap:function(touch, event) {
         event.getCurrentTarget().myShip.jump();
         return true;
+    },
+    update:function(dt) {
     },
 });
