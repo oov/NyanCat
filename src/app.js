@@ -67,7 +67,12 @@ var MyShipLayer = cc.Layer.extend({
         this._super();
         this.sprite = cc.Sprite.create(res.nc_png);
         this.addChild(this.sprite, 0);
+        this.scheduleUpdate();
         return true;
+    },
+    update:function(dt) {
+        this.x += 1;
+        this.y += 1;
     }
 });
 
