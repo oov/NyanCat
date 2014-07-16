@@ -85,6 +85,8 @@ var MyShipLayer = cc.Layer.extend({
 
 var BlockLayer = cc.Layer.extend({
     d:null,
+    vx: 0,
+    vy: 0,
     ctor:function (width, height, fillcolor) {
         this._super();
         this.d = cc.DrawNode.create();
@@ -94,7 +96,12 @@ var BlockLayer = cc.Layer.extend({
         var bbox = cc.size(width, height);
         this.d.setPosition(bbox.width * 0.5, bbox.height * 0.5);
         this.setContentSize(bbox);
+        this.scheduleUpdate();
         return true;
+    },
+    update:function(dt) {
+        this.x += this.vx;
+        this.y += this.vy;
     }
 });
 
