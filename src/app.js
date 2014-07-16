@@ -63,7 +63,7 @@ var HelloWorldLayer = cc.Layer.extend({
 
 var MyShipLayer = cc.Layer.extend({
     sprite:null,
-    vy: 0,
+    vy: 3,
     ctor:function () {
         this._super();
         this.sprite = cc.Sprite.create(res.nc_png);
@@ -76,7 +76,7 @@ var MyShipLayer = cc.Layer.extend({
         this.vy -= 0.09;
     },
     jump:function() {
-      this.y += 10;
+      this.vy = 3;
     }
 });
 
