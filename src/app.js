@@ -154,9 +154,17 @@ var HelloWorldScene = cc.Scene.extend({
     },
     update:function(dt) {
       var myShipBB = this.myShip.getBoundingBox();
-      for(var i = this.blocks.length - 1; i >= 0; --i) {
-        if (cc.rectIntersectsRect(myShipBB, this.blocks[i].getBoundingBox())) {
+      var size = cc.director.getWinSize();
+      for(var i = this.blocks.length - 1, bl; i >= 0; --i) {
+        bl = this.blocks[i];
+        if (cc.rectIntersectsRect(myShipBB, bl.getBoundingBox())) {
           cc.log('hit');
+        }
+        if (bl.x+bl.width < 0) {
+          bl.attr({
+            x: size.width,
+            y: -bl.height+Math.random()*(size.height+bl.height)
+          });
         }
       }
     },
