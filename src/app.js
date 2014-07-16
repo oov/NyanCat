@@ -100,6 +100,7 @@ var BlockLayer = cc.Layer.extend({
 
 var HelloWorldScene = cc.Scene.extend({
     myShip:null,
+    block:null,
     onEnter:function () {
         this._super();
         var layer = new HelloWorldLayer();
@@ -110,8 +111,8 @@ var HelloWorldScene = cc.Scene.extend({
           x: 40,
           y: cc.director.getWinSize().height / 2
         });
-        var block = new BlockLayer(100, 100, cc.color(128,128,128,255));
-        this.addChild(block);
+        this.block = new BlockLayer(100, 100, cc.color(128,128,128,255));
+        this.addChild(this.block);
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
@@ -124,5 +125,8 @@ var HelloWorldScene = cc.Scene.extend({
         return true;
     },
     update:function(dt) {
+      if (cc.rectIntersectsRect(this.myShip.getBoundingBox(), this.block.getBoundingBox())) {
+        cc.log('hit');
+      }
     },
 });
