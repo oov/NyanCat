@@ -107,7 +107,7 @@ var BlockLayer = cc.Layer.extend({
 
 var HelloWorldScene = cc.Scene.extend({
     myShip:null,
-    blocks:[],
+    blocks:null,
     onEnter:function () {
         this._super();
         var size = cc.director.getWinSize();
@@ -120,6 +120,7 @@ var HelloWorldScene = cc.Scene.extend({
           y: size.height / 2
         });
 
+        this.blocks = [];
         for (var i = 0, bl; i < 16; ++i) {
           bl = new BlockLayer(
             30+Math.random()*60,
