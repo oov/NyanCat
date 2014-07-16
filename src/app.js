@@ -100,7 +100,7 @@ var BlockLayer = cc.Layer.extend({
 
 var HelloWorldScene = cc.Scene.extend({
     myShip:null,
-    block:null,
+    blocks:[],
     onEnter:function () {
         this._super();
         var layer = new HelloWorldLayer();
@@ -111,8 +111,22 @@ var HelloWorldScene = cc.Scene.extend({
           x: 40,
           y: cc.director.getWinSize().height / 2
         });
-        this.block = new BlockLayer(100, 100, cc.color(128,128,128,255));
-        this.addChild(this.block);
+
+        for (var i = 0, bl; i < 100; ++i) {
+          bl = new BlockLayer(
+            40+Math.random()*60,
+            40+Math.random()*60,
+            cc.color(
+              128+Math.random()*64,
+              128+Math.random()*64,
+              128+Math.random()*64,
+              255
+            )
+          );
+          this.addChild(bl);
+          this.blocks.push(bl);
+        }
+
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
@@ -125,8 +139,11 @@ var HelloWorldScene = cc.Scene.extend({
         return true;
     },
     update:function(dt) {
-      if (cc.rectIntersectsRect(this.myShip.getBoundingBox(), this.block.getBoundingBox())) {
-        cc.log('hit');
+      var myShipBB = this.myShip.getBoundingBox();
+      for(var i = this.blocks.length - 1; i >= 0; --i) {
+        if (cc.rectIntersectsRect(myShipBB, this.blocks[i].getBoundingBox())) {
+          cc.log('hit');
+        }
       }
     },
 });
