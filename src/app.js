@@ -73,16 +73,20 @@ var MyShipLayer = cc.Layer.extend({
     update:function(dt) {
         this.x += 1;
         this.y += 1;
+    },
+    jump:function() {
+      this.y += 10;
     }
 });
 
 var HelloWorldScene = cc.Scene.extend({
+    myShip:null,
     onEnter:function () {
         this._super();
         var layer = new HelloWorldLayer();
         this.addChild(layer);
-        var myShip = new MyShipLayer();
-        this.addChild(myShip);
+        this.myShip = new MyShipLayer();
+        this.addChild(this.myShip);
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
@@ -90,8 +94,7 @@ var HelloWorldScene = cc.Scene.extend({
         }, this)
     },
     onTap:function(touch, event) {
-        var pos = touch.getLocation();
-        cc.log(pos);
+        event.getCurrentTarget().myShip.jump();
         return true;
     },
 });
