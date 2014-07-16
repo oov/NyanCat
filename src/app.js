@@ -87,6 +87,10 @@ var HelloWorldScene = cc.Scene.extend({
         this.addChild(layer);
         this.myShip = new MyShipLayer();
         this.addChild(this.myShip);
+        this.myShip.attr({
+          x: 40,
+          y: cc.director.getWinSize().height / 2
+        });
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
