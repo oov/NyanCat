@@ -68,6 +68,9 @@ var MyShipLayer = cc.Layer.extend({
         this._super();
         this.sprite = cc.Sprite.create(res.nc_png);
         this.addChild(this.sprite, 0);
+        var bbox = cc.size(18, 12);
+        this.sprite.setPosition(bbox.width * 0.5, bbox.height * 0.5);
+        this.setContentSize(bbox);
         this.scheduleUpdate();
         return true;
     },
@@ -88,6 +91,9 @@ var BlockLayer = cc.Layer.extend({
         var hw = width * 0.5, hh = height * 0.5;
         this.d.drawRect(cc.p(-hw, -hh), cc.p(hw, hh), fillcolor);
         this.addChild(this.d, 0);
+        var bbox = cc.size(width, height);
+        this.d.setPosition(bbox.width * 0.5, bbox.height * 0.5);
+        this.setContentSize(bbox);
         return true;
     }
 });
