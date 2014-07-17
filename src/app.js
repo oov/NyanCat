@@ -177,10 +177,12 @@ var HelloWorldScene = cc.Scene.extend({
           this.gameover();
           return;
         }
-        if (bl.x+bl.width < 0) {
+        if (bl.x+bl.width < 0 || bl.x > size.width || bl.y+bl.height < 0 || bl.y > size.height) {
           bl.attr({
             x: size.width,
-            y: -bl.height+Math.random()*(size.height+bl.height)
+            y: -bl.height+Math.random()*(size.height+bl.height),
+            vx: -0.5-Math.random()*3,
+            vy: -0.25+Math.random()*0.5
           });
         }
       }
