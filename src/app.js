@@ -165,6 +165,7 @@ var BlockLayer = cc.Layer.extend({
 var HelloWorldScene = cc.Scene.extend({
     myShip:null,
     blocks:null,
+    el:null,
     onEnter:function () {
         this._super();
         var size = cc.director.getWinSize();
@@ -199,11 +200,12 @@ var HelloWorldScene = cc.Scene.extend({
           this.blocks.push(bl);
         }
 
-        cc.eventManager.addListener({
+        this.el = cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: this.onTap,
-        }, this)
+        });
+        cc.eventManager.addListener(this.el, this);
         this.scheduleUpdateWithPriority(10);
     },
     onTap:function(touch, event) {
@@ -246,7 +248,7 @@ var HelloWorldScene = cc.Scene.extend({
     },
     gameover:function() {
       this.unscheduleUpdate();
-      cc.eventManager.removeListener(this);
+      cc.eventManager.removeListener(this.el);
 
       var layer = new GameOverLayer();
       this.addChild(layer);
