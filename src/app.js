@@ -155,14 +155,25 @@ var HelloWorldScene = cc.Scene.extend({
     },
     update:function(dt) {
       var myShipBB = this.myShip.getBoundingBox();
+      var barrierBB = cc.rect(myShipBB.x-40,myShipBB.y-40,myShipBB.width+80,myShipBB.height+80);
       var size = cc.director.getWinSize();
       if (myShipBB.y+myShipBB.height < 0 || myShipBB.y > size.height) {
         this.gameover();
         return;
       }
-      for(var i = this.blocks.length - 1, bl; i >= 0; --i) {
+      for(var i = this.blocks.length - 1, bl, bb; i >= 0; --i) {
         bl = this.blocks[i];
-        if (cc.rectIntersectsRect(myShipBB, bl.getBoundingBox())) {
+        bb = bl.getBoundingBox();
+        if (cc.rectIntersectsRect(barrierBB, bb)) {
+          var vx = (bb.x+bb.width*0.5) - (barrierBB.x+barrierBB.width*0.5);
+          var vy = (bb.y+bb.height*0.5) - (barrierBB.y+barrierBB.height*0.5);
+          var l = 1/Math.sqrt(vx*vx+vy*vy)*4;
+          bl.attr({
+            vx: vx * l,
+            vy: vy * l,
+          });
+        }
+        if (cc.rectIntersectsRect(myShipBB, bb)) {
           this.gameover();
           return;
         }
