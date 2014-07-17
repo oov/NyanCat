@@ -156,12 +156,14 @@ var HelloWorldScene = cc.Scene.extend({
     update:function(dt) {
       var myShipBB = this.myShip.getBoundingBox();
       var size = cc.director.getWinSize();
+      if (myShipBB.y+myShipBB.height < 0 || myShipBB.y > size.height) {
+        this.gameover();
+        return;
+      }
       for(var i = this.blocks.length - 1, bl; i >= 0; --i) {
         bl = this.blocks[i];
         if (cc.rectIntersectsRect(myShipBB, bl.getBoundingBox())) {
-          this.unscheduleUpdate();
-          cc.eventManager.removeListener(this);
-          cc.director.runScene(cc.TransitionFade.create(0.5, new HelloWorldScene()));
+          this.gameover();
           return;
         }
         if (bl.x+bl.width < 0) {
@@ -172,4 +174,9 @@ var HelloWorldScene = cc.Scene.extend({
         }
       }
     },
+    gameover:function() {
+      this.unscheduleUpdate();
+      cc.eventManager.removeListener(this);
+      cc.director.runScene(cc.TransitionFade.create(0.5, new HelloWorldScene()));
+    }
 });
