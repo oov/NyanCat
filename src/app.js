@@ -64,6 +64,7 @@ var HelloWorldLayer = cc.Layer.extend({
 var MyShipLayer = cc.Layer.extend({
     sprite:null,
     vy: 3,
+    barrier:false,
     ctor:function () {
         this._super();
         this.sprite = cc.Sprite.create(res.nc_png);
@@ -164,7 +165,7 @@ var HelloWorldScene = cc.Scene.extend({
       for(var i = this.blocks.length - 1, bl, bb; i >= 0; --i) {
         bl = this.blocks[i];
         bb = bl.getBoundingBox();
-        if (cc.rectIntersectsRect(barrierBB, bb)) {
+        if (this.myShip.barrier && cc.rectIntersectsRect(barrierBB, bb)) {
           var vx = (bb.x+bb.width*0.5) - (barrierBB.x+barrierBB.width*0.5);
           var vy = (bb.y+bb.height*0.5) - (barrierBB.y+barrierBB.height*0.5);
           var l = 1/Math.sqrt(vx*vx+vy*vy)*4;
