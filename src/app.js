@@ -98,7 +98,7 @@ var GameOverLayer = cc.Layer.extend({
             anchorY: 0.5
         });
 
-        var menu = cc.Menu.create([restartItem, returnToTitleItem]);
+        var menu = cc.Menu.create(restartItem, returnToTitleItem);
         menu.attr({
           x: 0,
           y: 0,
