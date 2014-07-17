@@ -194,3 +194,43 @@ var HelloWorldScene = cc.Scene.extend({
       cc.director.runScene(cc.TransitionFade.create(0.5, new HelloWorldScene()));
     }
 });
+
+var TitleLayer = cc.Layer.extend({
+    ctor:function () {
+        this._super();
+        var size = cc.director.getWinSize();
+        var sprite = cc.Sprite.create(res.title_jpg);
+        sprite.attr({
+            x: size.width * 0.5,
+            y: size.height * 0.5
+        });
+        this.addChild(sprite, 0);
+
+        var gameStartItem = cc.MenuItemImage.create(
+            res.game_start_normal_png,
+            res.game_start_selected_png,
+            function () {
+                cc.director.runScene(cc.TransitionFade.create(0.5, new HelloWorldScene()));
+            }, this);
+        gameStartItem.attr({
+            x: size.width * 0.5,
+            y: 80,
+            anchorX: 0.5,
+            anchorY: 0.5
+        });
+
+        var menu = cc.Menu.create(gameStartItem);
+        menu.x = 0;
+        menu.y = 0;
+        this.addChild(menu, 1);
+        return true;
+    }
+});
+
+var TitleScene = cc.Scene.extend({
+    onEnter:function () {
+        this._super();
+        var layer = new TitleLayer();
+        this.addChild(layer);
+    }
+});
