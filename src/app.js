@@ -61,6 +61,62 @@ var HelloWorldLayer = cc.Layer.extend({
     }
 });
 
+var GameOverLayer = cc.Layer.extend({
+    ctor:function () {
+        this._super();
+        var size = cc.director.getWinSize();
+        var sprite = cc.Sprite.create(res.title_jpg);
+        sprite.attr({
+            x: size.width * 0.5,
+            y: size.height * 0.5,
+            opacity: 0
+        });
+        this.addChild(sprite, 0);
+
+        var restartItem = cc.MenuItemImage.create(
+            res.restart_normal_png,
+            res.restart_selected_png,
+            function () {
+                cc.director.runScene(cc.TransitionFade.create(0.5, new HelloWorldScene()));
+            }, this);
+        restartItem.attr({
+            x: size.width * 0.5,
+            y: 160,
+            anchorX: 0.5,
+            anchorY: 0.5
+        });
+        var returnToTitleItem = cc.MenuItemImage.create(
+            res.return_to_title_normal_png,
+            res.return_to_title_selected_png,
+            function () {
+                cc.director.runScene(cc.TransitionFade.create(0.5, new TitleScene()));
+            }, this);
+        returnToTitleItem.attr({
+            x: size.width * 0.5,
+            y: 80,
+            anchorX: 0.5,
+            anchorY: 0.5
+        });
+
+        var menu = cc.Menu.create([restartItem, returnToTitleItem]);
+        menu.attr({
+          x: 0,
+          y: 0,
+          opacity: 0,
+          enabled: false,
+        });
+        this.addChild(menu, 1);
+        sprite.runAction(cc.FadeIn.create(0.5));
+        menu.runAction(cc.Sequence.create(
+          cc.DelayTime.create(0.5),
+          cc.FadeIn.create(0.5),
+          cc.CallFunc.create(function(){ this.enabled = true; }, menu)
+        ));
+
+        return true;
+    }
+});
+
 var MyShipLayer = cc.Layer.extend({
     sprite:null,
     vy: 3,
@@ -191,7 +247,9 @@ var HelloWorldScene = cc.Scene.extend({
     gameover:function() {
       this.unscheduleUpdate();
       cc.eventManager.removeListener(this);
-      cc.director.runScene(cc.TransitionFade.create(0.5, new HelloWorldScene()));
+
+      var layer = new GameOverLayer();
+      this.addChild(layer);
     }
 });
 
