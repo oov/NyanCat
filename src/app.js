@@ -162,6 +162,51 @@ var BlockLayer = cc.Layer.extend({
     }
 });
 
+var HomingMissoLayer = cc.Layer.extend({
+    target:null,
+    particle:null,
+    d:null,
+    a:0,
+    vx:0,
+    vy:0,
+    speed:6,
+    angle:0.3,
+    ctor:function () {
+      this._super();
+      this.scheduleUpdate();
+      this.d = cc.DrawNode.create();
+      this.d.drawRect(cc.p(-8, -2), cc.p(8, 2), cc.color(255,255,255,255));
+      this.addChild(this.d, 0);
+      var bbox = cc.size(16, 16);
+      this.d.setPosition(bbox.width * 0.5, bbox.height * 0.5);
+      this.setContentSize(bbox);
+      this.particle = cc.ParticleSystem.create(res.FireParticle_plist);
+      this.addChild(this.particle);
+      return true;
+    },
+    update:function(dt) {
+      var bb = this.target.getBoundingBox();
+      var dx = this.d.x, dy = this.d.y;
+      var vx = this.vx, vy = this.vy;
+      var tx = bb.x + bb.width*0.5 - dx, ty = bb.y + bb.height*0.5 - dy;
+      var tl = Math.sqrt(tx*tx+ty*ty), a = this.a;
+      if ((tx*vx+ty*vy)/(tl*Math.sqrt(vx*vx+vy*vy)) < 0) {
+        a += this.angle;
+      } else {
+        a += this.angle * (vx*ty - vy*tx)/tl/this.speed;
+      }
+      this.a = a;
+      var cosa = Math.cos(a), sina = Math.sin(a), r = a*180/Math.PI;
+      this.vx = vx = this.speed * cosa;
+      this.vy = vy = this.speed * sina;
+      this.d.x = dx += vx;
+      this.d.y = dy += vy;
+      this.d.rotation = -r;
+      this.particle.setSourcePosition(cc.p(dx + -6 * cosa, dy + -6 * sina));
+      this.particle.angle = 180+r;
+    }
+});
+
 var HelloWorldScene = cc.Scene.extend({
     myShip:null,
     blocks:null,
@@ -199,6 +244,19 @@ var HelloWorldScene = cc.Scene.extend({
           this.addChild(bl);
           this.blocks.push(bl);
         }
+
+        var ml = new HomingMissoLayer();
+        ml.attr({target: this.blocks[0]});
+        this.addChild(ml);
+        var ml = new HomingMissoLayer();
+        ml.attr({target: this.blocks[1]});
+        this.addChild(ml);
+        var ml = new HomingMissoLayer();
+        ml.attr({target: this.blocks[2]});
+        this.addChild(ml);
+        var ml = new HomingMissoLayer();
+        ml.attr({target: this.blocks[3]});
+        this.addChild(ml);
 
         this.el = cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,

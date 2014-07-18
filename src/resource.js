@@ -9,7 +9,9 @@ var res = {
     restart_normal_png : "res/restart_normal.png",
     restart_selected_png : "res/restart_selected.png",
     return_to_title_normal_png : "res/return_to_title_normal.png",
-    return_to_title_selected_png : "res/return_to_title_selected.png"
+    return_to_title_selected_png : "res/return_to_title_selected.png",
+    FireParticle_plist : "res/FireParticle.plist",
+    stripes_png : "res/stripes.png",
 };
 
 var g_resources = [
@@ -24,9 +26,11 @@ var g_resources = [
     res.restart_normal_png,
     res.restart_selected_png,
     res.return_to_title_normal_png,
-    res.return_to_title_selected_png
+    res.return_to_title_selected_png,
+    res.stripes_png,
 
     //plist
+    res.FireParticle_plist,
 
     //fnt
 
