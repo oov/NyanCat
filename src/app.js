@@ -119,8 +119,11 @@ var GameOverLayer = cc.Layer.extend({
 
 var MyShipLayer = cc.Layer.extend({
     sprite:null,
-    vy: 3,
+    vy: 140,
     barrier:false,
+    d:0,
+    origY: 0,
+    G: -280,
     ctor:function () {
         this._super();
         this.sprite = cc.Sprite.create(res.nc_png);
@@ -132,11 +135,12 @@ var MyShipLayer = cc.Layer.extend({
         return true;
     },
     update:function(dt) {
-        this.y += this.vy;
-        this.vy -= 0.1;
+      var d = this.d += dt;
+      this.y = 0.5*this.G*d*d + this.vy*d + this.origY;
     },
     jump:function() {
-      this.vy = 3;
+      this.d = 0;
+      this.origY = this.y;
     }
 });
 
@@ -157,8 +161,8 @@ var BlockLayer = cc.Layer.extend({
         return true;
     },
     update:function(dt) {
-        this.x += this.vx;
-        this.y += this.vy;
+        this.x += this.vx * dt;
+        this.y += this.vy * dt;
     }
 });
 
@@ -167,13 +171,17 @@ var HomingMissoLayer = cc.Layer.extend({
     particle:null,
     d:null,
     a:0,
+    acos:0,
+    asin:0,
     vx:0,
     vy:0,
-    speed:6,
+    speed:300,
+    trackInterval: 0.032,
     angle:0.3,
     ctor:function () {
       this._super();
       this.scheduleUpdate();
+      this.schedule(this.track, this.trackInterval);
       this.d = cc.DrawNode.create();
       this.d.drawRect(cc.p(-8, -2), cc.p(8, 2), cc.color(255,255,255,255));
       this.addChild(this.d, 0);
@@ -184,26 +192,29 @@ var HomingMissoLayer = cc.Layer.extend({
       this.addChild(this.particle);
       return true;
     },
-    update:function(dt) {
+    track:function(dt) {
       var bb = this.target.getBoundingBox();
       var dx = this.d.x, dy = this.d.y;
       var vx = this.vx, vy = this.vy;
       var tx = bb.x + bb.width*0.5 - dx, ty = bb.y + bb.height*0.5 - dy;
-      var tl = Math.sqrt(tx*tx+ty*ty), a = this.a;
-      if ((tx*vx+ty*vy)/(tl*Math.sqrt(vx*vx+vy*vy)) < 0) {
-        a += this.angle;
+      if ((tx*vx+ty*vy)/(vx*vx+vy*vy) < 0) {
+        this.a += this.angle;
       } else {
-        a += this.angle * (vx*ty - vy*tx)/tl/this.speed;
+        this.a += this.angle * (vx*ty - vy*tx)/Math.sqrt(tx*tx+ty*ty)/this.speed;
       }
-      this.a = a;
-      var cosa = Math.cos(a), sina = Math.sin(a), r = a*180/Math.PI;
-      this.vx = vx = this.speed * cosa;
-      this.vy = vy = this.speed * sina;
-      this.d.x = dx += vx;
-      this.d.y = dy += vy;
+      this.acos = Math.cos(this.a);
+      this.asin = Math.sin(this.a);
+      this.vx = this.speed * this.acos;
+      this.vy = this.speed * this.asin;
+      var r = this.a*180/Math.PI;
       this.d.rotation = -r;
-      this.particle.setSourcePosition(cc.p(dx + -6 * cosa, dy + -6 * sina));
       this.particle.angle = 180+r;
+    },
+    update:function(dt) {
+      var x = this.vx * dt + this.d.x, y = this.vy * dt + this.d.y;
+      this.d.x = x;
+      this.d.y = y;
+      this.particle.setSourcePosition(cc.p(x + -6 * this.acos, y + -6 * this.asin));
     }
 });
 
@@ -222,6 +233,7 @@ var HelloWorldScene = cc.Scene.extend({
           x: 40,
           y: size.height / 2
         });
+        this.myShip.jump();
 
         this.blocks = [];
         for (var i = 0, bl; i < 16; ++i) {
@@ -238,8 +250,8 @@ var HelloWorldScene = cc.Scene.extend({
           bl.attr({
             x: size.width+Math.random()*size.width,
             y: -bl.height+Math.random()*(size.height+bl.height),
-            vx: -0.5-Math.random()*3,
-            vy: -0.25+Math.random()*0.5
+            vx: -60-Math.random()*60,
+            vy: -2.5+Math.random()*5
           });
           this.addChild(bl);
           this.blocks.push(bl);
@@ -298,8 +310,8 @@ var HelloWorldScene = cc.Scene.extend({
           bl.attr({
             x: size.width,
             y: -bl.height+Math.random()*(size.height+bl.height),
-            vx: -0.5-Math.random()*3,
-            vy: -0.25+Math.random()*0.5
+            vx: -60-Math.random()*60,
+            vy: -2.5+Math.random()*5
           });
         }
       }
