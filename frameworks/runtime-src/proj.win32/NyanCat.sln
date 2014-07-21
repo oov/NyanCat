@@ -5,6 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NyanCat", "NyanCat.vcxproj"
 	ProjectSection(ProjectDependencies) = postProject
 		{79D34511-E54E-410A-8BBA-EF175AD6C695} = {79D34511-E54E-410A-8BBA-EF175AD6C695}
 		{21B2C324-891F-48EA-AD1A-5AE13DE12E28} = {21B2C324-891F-48EA-AD1A-5AE13DE12E28}
+		{7E06E92C-537A-442B-9E4A-4761C84F8A1A} = {7E06E92C-537A-442B-9E4A-4761C84F8A1A}
 		{B57CF53F-2E49-4031-9822-047CC0E6BDE2} = {B57CF53F-2E49-4031-9822-047CC0E6BDE2}
 		{39379840-825A-45A0-B363-C09FFEF864BD} = {39379840-825A-45A0-B363-C09FFEF864BD}
 		{21070E58-EEC6-4E16-8B4F-6D083DF55790} = {21070E58-EEC6-4E16-8B4F-6D083DF55790}
@@ -61,6 +62,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSpine", "..\..\js-bindings\cocos2d-x\cocos\editor-support\spine\proj.win32\libSpine.vcxproj", "{B7C2A162-DEC9-4418-972E-240AB3CBFCAE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libJSBindingForSpine", "..\..\js-bindings\bindings\proj.win32\libJSBindingForSpine.vcxproj", "{E78CDC6B-F37D-48D2-AD91-1DB549497E32}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libBox2D", "..\..\js-bindings\cocos2d-x\external\Box2D\proj.win32\Box2D.vcxproj", "{929480E7-23C0-4DF6-8456-096D71547116}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -148,6 +151,10 @@ Global
 		{E78CDC6B-F37D-48D2-AD91-1DB549497E32}.Debug|Win32.Build.0 = Debug|Win32
 		{E78CDC6B-F37D-48D2-AD91-1DB549497E32}.Release|Win32.ActiveCfg = Release|Win32
 		{E78CDC6B-F37D-48D2-AD91-1DB549497E32}.Release|Win32.Build.0 = Release|Win32
+		{929480E7-23C0-4DF6-8456-096D71547116}.Debug|Win32.ActiveCfg = Debug|Win32
+		{929480E7-23C0-4DF6-8456-096D71547116}.Debug|Win32.Build.0 = Debug|Win32
+		{929480E7-23C0-4DF6-8456-096D71547116}.Release|Win32.ActiveCfg = Release|Win32
+		{929480E7-23C0-4DF6-8456-096D71547116}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,23 +8,35 @@
     "copy_resources": [
         {
             "from": "../../../src",
-            "to": "src"
+            "to": "src",
+             "exclude": [
+                "*.gz"
+            ]
         },
         {
             "from": "../../../res",
-            "to": "res"
+            "to": "res",
+            "exclude": [
+                "*.gz"
+            ]
         },
         {
             "from": "../../../main.js",
+            "to": ""
+        }
+    ],
+    "must_copy_resources": [
+        {
+            "from": "../../js-bindings/bindings/script",
+            "to": "script"
+        },
+        {
+            "from": "../../../config.json",
             "to": ""
         },
         {
             "from": "../../../project.json",
             "to": ""
-        },
-        {
-            "from": "../../js-bindings/bindings/script",
-            "to": "script"
-        }
+        } 
     ]
 }
