@@ -8,7 +8,7 @@
     "renderMode" : 2,
     "engineDir":"frameworks/cocos2d-html5",
 
-    "modules" : ["menus", "cocos2d"],
+    "modules" : ["menus", "cocos2d", "cocostudio"],
 
     "jsList" : [
         "src/resource.js",

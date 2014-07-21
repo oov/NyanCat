@@ -12,6 +12,10 @@ var res = {
 	return_to_title_selected_png : "res/return_to_title_selected.png",
 	FireParticle_plist : "res/FireParticle.plist",
 	stripes_png : "res/stripes.png",
+	font_png : "res/main/font.png",
+	main_json : "res/main/main.json",
+	score_png : "res/main/score.png",
+	font_fnt : "res/main/font.fnt",
 };
 
 var g_resources = [
@@ -28,16 +32,21 @@ var g_resources = [
 	res.return_to_title_normal_png,
 	res.return_to_title_selected_png,
 	res.stripes_png,
-	
+	res.score_png,
+	res.font_png,
+
 	// plist
 	res.FireParticle_plist,
 	
 	// fnt
-	
+	res.font_fnt,
+
 	// tmx
 	
 	// bgm
 	
 	// effect
-	
+
+	// json
+	res.main_json,
 ];

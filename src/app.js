@@ -62,6 +62,26 @@ var HelloWorldLayer = cc.Layer.extend({
 	}
 });
 
+var StatusLayer = cc.Layer.extend({
+	_score:0,
+	ui:null,
+	scoreValue:null,
+	getScore: function () {
+		return this._score;
+	},
+	setScore: function (newScore) {
+		this._score = newScore;
+		this.scoreValue.string = newScore;
+	},
+	ctor:function () {
+		this._super();
+		cc.defineGetterSetter(this, "score", this.getScore, this.setScore);
+		this.ui = ccs.uiReader.widgetFromJsonFile(res.main_json);
+		this.scoreValue = ccui.helper.seekWidgetByName(this.ui, "scoreValue");
+		this.addChild(this.ui);
+	}
+});
+
 var GameOverLayer = cc.Layer.extend({
 	ctor:function () {
 		this._super();
@@ -223,6 +243,8 @@ var HelloWorldScene = cc.Scene.extend({
 	myShip:null,
 	blocks:null,
 	el:null,
+	status:null,
+	live:0,
 	onEnter:function () {
 		this._super();
 		var size = cc.director.getWinSize();
@@ -271,6 +293,10 @@ var HelloWorldScene = cc.Scene.extend({
 		ml.attr({target: this.blocks[3]});
 		this.addChild(ml);
 
+		this.status = new StatusLayer();
+		this.addChild(this.status);
+		this.status.score = 0;
+
 		this.el = cc.EventListener.create({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			swallowTouches: true,
@@ -316,6 +342,9 @@ var HelloWorldScene = cc.Scene.extend({
 				});
 			}
 		}
+		
+		this.live += dt;
+		this.status.score = Math.floor(this.live * 1000);
 	},
 	gameover:function() {
 		this.unscheduleUpdate();
