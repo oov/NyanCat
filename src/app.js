@@ -298,6 +298,7 @@ var HelloWorldScene = cc.Scene.extend({
 		this.addChild(this.status);
 		this.status.score = 0;
 
+		cc.audioEngine.playMusic(res.bgm_mp3, true);
 		var that = this;
 		this.el = cc.EventListener.create({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -353,6 +354,10 @@ var HelloWorldScene = cc.Scene.extend({
 		this.status.score = Math.floor(this.live * 1000);
 	},
 	gameover:function() {
+		if (this.jumpAudioId !== null) {
+			cc.audioEngine.stopEffect(this.jumpAudioId);
+		}
+		cc.audioEngine.stopMusic(true);
 		this.unscheduleUpdate();
 		cc.eventManager.removeListener(this.el);
 

@@ -17,6 +17,7 @@ var res = {
 	score_png : "res/main/score.png",
 	font_fnt : "res/main/font.fnt",
 	jump_mp3 : "res/jump.mp3",
+	bgm_mp3 : "res/bgm.mp3",
 };
 
 var g_resources = [
@@ -45,6 +46,7 @@ var g_resources = [
 	// tmx
 	
 	// bgm
+	res.bgm_mp3,
 	
 	// effect
 	res.jump_mp3,
