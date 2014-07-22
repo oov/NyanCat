@@ -16,6 +16,7 @@ var res = {
 	main_json : "res/main/main.json",
 	score_png : "res/main/score.png",
 	font_fnt : "res/main/font.fnt",
+	jump_mp3 : "res/jump.mp3",
 };
 
 var g_resources = [
@@ -46,6 +47,7 @@ var g_resources = [
 	// bgm
 	
 	// effect
+	res.jump_mp3,
 
 	// json
 	res.main_json,

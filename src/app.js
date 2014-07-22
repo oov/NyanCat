@@ -244,6 +244,7 @@ var HelloWorldScene = cc.Scene.extend({
 	blocks:null,
 	el:null,
 	status:null,
+	jumpAudioId:null,
 	live:0,
 	onEnter:function () {
 		this._super();
@@ -297,16 +298,21 @@ var HelloWorldScene = cc.Scene.extend({
 		this.addChild(this.status);
 		this.status.score = 0;
 
+		var that = this;
 		this.el = cc.EventListener.create({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
 			swallowTouches: true,
-			onTouchBegan: this.onTap,
+			onTouchBegan: function(touch, event){ return that.onTap(touch, event); },
 		});
 		cc.eventManager.addListener(this.el, this);
 		this.scheduleUpdateWithPriority(10);
 	},
 	onTap:function(touch, event) {
-		event.getCurrentTarget().myShip.jump();
+		this.myShip.jump();
+		if (this.jumpAudioId !== null) {
+			cc.audioEngine.stopEffect(this.jumpAudioId);
+		}
+		this.jumpAudioId = cc.audioEngine.playEffect(res.jump_mp3);
 		return true;
 	},
 	update:function(dt) {
