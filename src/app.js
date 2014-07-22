@@ -169,6 +169,7 @@ var BlockLayer = cc.Layer.extend({
 	d:null,
 	vx: 0,
 	vy: 0,
+	accel:null,
 	ctor:function (width, height, fillcolor) {
 		this._super();
 		this.d = cc.DrawNode.create();
@@ -182,7 +183,7 @@ var BlockLayer = cc.Layer.extend({
 		return true;
 	},
 	update:function(dt) {
-		this.x += this.vx * dt;
+		this.x += this.vx * dt * (1-Math.min(0.5, Math.max(-0.5, this.accel.x)));
 		this.y += this.vy * dt;
 	}
 });
@@ -243,14 +244,19 @@ var HelloWorldScene = cc.Scene.extend({
 	myShip:null,
 	blocks:null,
 	el:null,
+	ela:null,
 	status:null,
 	jumpAudioId:null,
+	accel:null,
 	live:0,
 	onEnter:function () {
 		this._super();
 		var size = cc.director.getWinSize();
 		var layer = new HelloWorldLayer();
 		this.addChild(layer);
+		
+		this.accel={x:0, y:0, z:0};
+
 		this.myShip = new MyShipLayer();
 		this.addChild(this.myShip);
 		this.myShip.attr({
@@ -275,7 +281,8 @@ var HelloWorldScene = cc.Scene.extend({
 				x: size.width+Math.random()*size.width,
 				y: -bl.height+Math.random()*(size.height+bl.height),
 				vx: -60-Math.random()*60,
-				vy: -2.5+Math.random()*5
+				vy: -2.5+Math.random()*5,
+				accel: this.accel,
 			});
 			this.addChild(bl);
 			this.blocks.push(bl);
@@ -306,6 +313,13 @@ var HelloWorldScene = cc.Scene.extend({
 			onTouchBegan: function(touch, event){ return that.onTap(touch, event); },
 		});
 		cc.eventManager.addListener(this.el, this);
+
+		cc.inputManager.setAccelerometerEnabled(true);  
+		this.ela = cc.EventListener.create({
+			event: cc.EventListener.ACCELERATION,
+			callback: function(accel, event){ return that.onAccel(accel, event); },
+		});
+		cc.eventManager.addListener(this.ela, this);
 		this.scheduleUpdateWithPriority(10);
 	},
 	onTap:function(touch, event) {
@@ -314,6 +328,12 @@ var HelloWorldScene = cc.Scene.extend({
 			cc.audioEngine.stopEffect(this.jumpAudioId);
 		}
 		this.jumpAudioId = cc.audioEngine.playEffect(res.jump_mp3);
+		return true;
+	},
+	onAccel:function(accel, event) {
+		this.accel.x = accel.x;
+		this.accel.y = accel.y;
+		this.accel.z = accel.z;
 		return true;
 	},
 	update:function(dt) {
@@ -350,7 +370,7 @@ var HelloWorldScene = cc.Scene.extend({
 			}
 		}
 		
-		this.live += dt;
+		this.live += dt * (1-Math.min(0.5, Math.max(-0.5, this.accel.x)));
 		this.status.score = Math.floor(this.live * 1000);
 	},
 	gameover:function() {
@@ -360,6 +380,7 @@ var HelloWorldScene = cc.Scene.extend({
 		cc.audioEngine.stopMusic(true);
 		this.unscheduleUpdate();
 		cc.eventManager.removeListener(this.el);
+		cc.eventManager.removeListener(this.ela);
 
 		var layer = new GameOverLayer();
 		this.addChild(layer);
